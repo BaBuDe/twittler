@@ -5,56 +5,106 @@
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
   </head>
+    <style>
+
+        #messages li {
+          list-style-type: none;
+          padding-top: 5px;
+        }
+
+        #messages {
+          position: fixed;
+
+        }
+
+        #messageButton {
+          position: fixed;
+          background: #9cf;
+          bottom: 25%;
+          right: 40%;
+        }
+
+        #header1 {
+          text-align: center;
+          font-family: helvetica;
+        }
+
+        #header2 {
+          text-align: center;
+          font: helvetica;
+        }
+
+        #header3 {
+          text-align: left;
+          font: helvetica;
+          padding-left: 20px;
+        }
+
+
+      </style>
   <body>
 
-    <script>
 
+    <script>
 
       $(document).ready(function(){
         var $body = $('body');
         $body.html('');
-  
 
-      var amtDisplayed = 0;
-      
+        var header = document.createElement("h1");
+        document.body.appendChild(header);
+        header.innerHTML = "Tweet it up with other twits!"
+        header.id = 'header1';
 
-      var newButton = document.createElement("button"); 
-      document.body.appendChild(newButton);
-      newButton.type = 'button';
-      newButton.id = 'messageButton';
-      newButton.innerHTML = 'get messages';    
+        var subHeader = document.createElement("h2");
+        document.body.appendChild(subHeader);
+        subHeader.innerHTML = "What are people saying?"
+        subHeader.id = 'header2';
 
-      //original code below ****
-      //why would you want to append directly to the body???
-      var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (tweeted on ' + tweet.created_at + ')');
-          $tweet.appendTo($body);
-          index -= 1;
-          amtDisplayed +=1;
-        } 
+        var userInfo = document.createElement("h3");
+        document.body.appendChild(userInfo);
+        userInfo.innerHTML = "Hover over any username for a detailed tweet timeline"
+        userInfo.id = 'header3';
 
+        var messageBlock = document.createElement("ul");
+        document.body.appendChild(messageBlock);
+        messageBlock.setAttribute('id', 'messages');
+        
+        var newButton = document.createElement("button"); 
+        document.body.appendChild(newButton);
+        newButton.type = 'button';
+        newButton.id = 'messageButton';
+        newButton.innerHTML = 'Show most recent messages'; 
 
-//using a button    
+        var index = streams.home.length - 1;
+        var amtDisplayed = 0;
+
+        //Button for ading new messages    
         $("body").click("#messageButton", function() {
-          //need to clear old messages??? how to do without erasing the button since there are no containers??
+            
           index = amtDisplayed;
-          while(index >= amtDisplayed){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (tweeted on ' + tweet.created_at + ')');
-          $tweet.prependTo($body);
-          index -= 1;
-          amtDisplayed +=1;
-        } 
+          //only displays new messages if there are new ones to go in the pipeline
+           while(index >= amtDisplayed){
+           //removes last child in UL so that number of messages displayed remains constant
+            if (amtDisplayed >= 11) {
+              $( "ul li:nth-last-child(1)" ).remove(); 
+            }          
+            var tweet = streams.home[index];
+            var $tweet = $('<li></li>');
+            $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (tweeted on ' + tweet.created_at + ')');
+            $('#messages').prepend($tweet);
+            index -= 1;
+            amtDisplayed +=1;
+          } 
+
+          $()
         
         });
      
    
 
       });
+
 
      
 
