@@ -86,20 +86,14 @@
         newButton.id = 'messageButton';
         newButton.innerHTML = 'Show most recent messages'; 
 
-        var index = streams.home.length - 1;
-        var amtDisplayed = 0;
+   
+       
+        var index = 0;
 
-
-        //Button for adding new messages    
+        //auto-add tweets...haven't figured this out yet
+       
+        //Button for adding newest message    
         $("#messageButton").click(function() {
-            
-          index = streams.home.length - 1;
-          //only displays new messages if there are new ones to go in the pipeline
-           while(amtDisplayed <= index){
-           //removes last child in UL so that number of messages displayed remains constant
-            if (amtDisplayed >= 11) {
-              $( "ul li:nth-last-child(5)" ).remove(); 
-            }          
             
             //appends clickable usernames and tweets to container
             var tweet = streams.home[index];
@@ -109,12 +103,23 @@
             tweetContent.text(tweet.message + ' (tweeted on ' + tweet.created_at + ')');
             var userName = $('<span id="userName"></span>');
             userName.text('@' + currentUsername + ': ');
+            userName.appendTo(tweetObject);
+            tweetContent.appendTo(tweetObject);
+
+            $('#messages').prepend(tweetObject);
+            $('#messages').append(tweetList);
+            $("#messages li:gt(11):last").remove(); 
+            index += 1;
+            console.log(streams.home);
+        });
+
+      
 
             //*************tweet list pops up on click of username
             var tweetList = $('<div></div>');
             
             
-            userName.click(function() {
+        userName.click(function() {
                 //loop through arrray of objects, and post them
                 var index = streams.users[tweet.user].length - 1;
                 while(index >= 0){
@@ -124,30 +129,20 @@
                   b.appendTo(tweetList);
                   index -= 1;
                 }
-            });
 
+           //removes last child in UL so that number of messages displayed remains constant
+         
+                     
             //*******
 
-            userName.appendTo(tweetObject);
-            tweetContent.appendTo(tweetObject);
-
-            $('#messages').prepend(tweetObject);
-            $('#messages').append(tweetList);
-            index -= 1;
-            amtDisplayed +=1;
 
            
 
 
-          }
-        });
+          });
+     
 
 });
-     //var userName = tweet
-
-
-
-
     </script>
 
   </body>
