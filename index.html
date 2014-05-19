@@ -40,6 +40,16 @@
           padding-left: 20px;
         }
 
+        #currentUsername {
+          color: red;
+        }
+
+        #userName {
+          color: blue;
+        }
+
+       
+
 
       </style>
   <body>
@@ -63,7 +73,7 @@
 
         var userInfo = document.createElement("h3");
         document.body.appendChild(userInfo);
-        userInfo.innerHTML = "Hover over any username for a detailed tweet timeline"
+        userInfo.innerHTML = "Click a username for their tweet timeline"
         userInfo.id = 'header3';
 
         var messageBlock = document.createElement("ul");
@@ -79,34 +89,61 @@
         var index = streams.home.length - 1;
         var amtDisplayed = 0;
 
-        //Button for ading new messages    
-        $("body").click("#messageButton", function() {
+
+        //Button for adding new messages    
+        $("#messageButton").click(function() {
             
-          index = amtDisplayed;
+          index = streams.home.length - 1;
           //only displays new messages if there are new ones to go in the pipeline
-           while(index >= amtDisplayed){
+           while(amtDisplayed <= index){
            //removes last child in UL so that number of messages displayed remains constant
             if (amtDisplayed >= 11) {
-              $( "ul li:nth-last-child(1)" ).remove(); 
+              $( "ul li:nth-last-child(5)" ).remove(); 
             }          
+            
+            //appends clickable usernames and tweets to container
             var tweet = streams.home[index];
-            var $tweet = $('<li></li>');
-            $tweet.text('@' + tweet.user + ': ' + tweet.message + ' (tweeted on ' + tweet.created_at + ')');
-            $('#messages').prepend($tweet);
+            var currentUsername = tweet.user;
+            var tweetObject = $('<li></li>');
+            var tweetContent = $('<span></span>');
+            tweetContent.text(tweet.message + ' (tweeted on ' + tweet.created_at + ')');
+            var userName = $('<span id="userName"></span>');
+            userName.text('@' + currentUsername + ': ');
+
+            //*************tweet list pops up on click of username
+            var tweetList = $('<div></div>');
+            
+            
+            userName.click(function() {
+                //loop through arrray of objects, and post them
+                var index = streams.users[tweet.user].length - 1;
+                while(index >= 0){
+                  var a = streams.users[tweet.user][index];
+                  var b = $('<div></div>');
+                  b.text('@' + a.user + ': ' + a.message);
+                  b.appendTo(tweetList);
+                  index -= 1;
+                }
+            });
+
+            //***********
+
+            userName.appendTo(tweetObject);
+            tweetContent.appendTo(tweetObject);
+
+            $('#messages').prepend(tweetObject);
+            $('#messages').append(tweetList);
             index -= 1;
             amtDisplayed +=1;
-          } 
 
-          $()
-        
+           
+
+
+          }
         });
-     
-   
 
-      });
-
-
-     
+});
+     //var userName = tweet
 
 
 
