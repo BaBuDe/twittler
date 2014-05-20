@@ -73,18 +73,22 @@
 
         var userInfo = document.createElement("h3");
         document.body.appendChild(userInfo);
-        userInfo.innerHTML = "Click a username for their tweet timeline"
+        userInfo.innerHTML = "Click a user for their tweet timeline."
         userInfo.id = 'header3';
 
         var messageBlock = document.createElement("ul");
         document.body.appendChild(messageBlock);
-        messageBlock.setAttribute('id', 'messages');
+        messageBlock.id = 'messages';
         
         var newButton = document.createElement("button"); 
         document.body.appendChild(newButton);
         newButton.type = 'button';
         newButton.id = 'messageButton';
-        newButton.innerHTML = 'Show most recent messages'; 
+        newButton.innerHTML = 'Show most recent messages';
+
+        var userTimeline = document.createElement("ul");
+        $('#messages').append(userTimeline);
+        userTimeline.id = 'timeline'; 
 
    
        
@@ -94,52 +98,44 @@
        
         //Button for adding newest message    
         $("#messageButton").click(function() {
+
+            $('#timeline').empty();
             
             //appends clickable usernames and tweets to container
             var tweet = streams.home[index];
             var currentUsername = tweet.user;
             var tweetObject = $('<li></li>');
             var tweetContent = $('<span></span>');
-            tweetContent.text(tweet.message + ' (tweeted on ' + tweet.created_at + ')');
             var userName = $('<span id="userName"></span>');
+
             userName.text('@' + currentUsername + ': ');
+            tweetContent.text(tweet.message + ' (tweeted on ' + tweet.created_at + ')');
+
             userName.appendTo(tweetObject);
             tweetContent.appendTo(tweetObject);
 
             $('#messages').prepend(tweetObject);
-            $('#messages').append(tweetList);
+
             $("#messages li:gt(11):last").remove(); 
+            
             index += 1;
-            console.log(streams.home);
-        });
-
-      
-
-            //*************tweet list pops up on click of username
-            var tweetList = $('<div></div>');
-            
-            
-        userName.click(function() {
-                //loop through arrray of objects, and post them
-                var index = streams.users[tweet.user].length - 1;
-                while(index >= 0){
-                  var a = streams.users[tweet.user][index];
-                  var b = $('<div></div>');
-                  b.text('@' + a.user + ': ' + a.message);
-                  b.appendTo(tweetList);
-                  index -= 1;
-                }
-
-           //removes last child in UL so that number of messages displayed remains constant
-         
-                     
-            //*******
-
-
            
 
-
+          $('#userName').click(function() {
+                $('#timeline').empty();
+                var whoseTimeline = $('<li></li>');
+                whoseTimeline.text('Timeline for ' + currentUsername + ':');
+                $('#timeline').append(whoseTimeline);
+                var index = streams.users[currentUsername].length - 1;
+                while(index >= 0){
+                  var a = streams.users[currentUsername][index];
+                  var b = $('<div></div>');
+                  b.text(a.created_at +' : ' + a.message);
+                  b.appendTo(timeline);
+                  index -= 1;
+                };
           });
+        });
      
 
 });
