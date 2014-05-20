@@ -9,19 +9,20 @@
 
         #messages li {
           list-style-type: none;
-          padding-top: 5px;
+          padding-top: 3px;
         }
 
         #messages {
-          position: fixed;
-
+           width: 750px;
+     background-color: #8B9494;
+    min-height: 100px;
+    position: fixed;
         }
 
         #messageButton {
           position: fixed;
-          background: #9cf;
-          bottom: 25%;
-          right: 40%;
+          bottom: 10%;
+          right: 50%;
         }
 
         #header1 {
@@ -48,6 +49,28 @@
           color: blue;
         }
 
+       #container {
+         width: 1200px;
+     margin: 0 auto;
+     position: relative;
+       }
+
+        #timeline {
+        
+         width: 350px;
+     background-color: pink;
+     float: right;
+     overflow: scroll;
+       }
+
+       #timeline, #messages {
+        border: 1px solid white;
+    min-height: 450px;
+  }
+        body {
+            background-color: #CCFFFF;
+            margin: 0;
+        }
        
 
 
@@ -63,12 +86,12 @@
 
         var header = document.createElement("h1");
         document.body.appendChild(header);
-        header.innerHTML = "Tweet it up with other twits!"
+        header.innerHTML = "Twittler"
         header.id = 'header1';
 
         var subHeader = document.createElement("h2");
         document.body.appendChild(subHeader);
-        subHeader.innerHTML = "What are people saying?"
+        subHeader.innerHTML = "Tweet it up with other twits!"
         subHeader.id = 'header2';
 
         var userInfo = document.createElement("h3");
@@ -76,9 +99,13 @@
         userInfo.innerHTML = "Click a user for their tweet timeline."
         userInfo.id = 'header3';
 
+        var mainContainer = document.createElement("div");
+        document.body.appendChild(mainContainer);
+        mainContainer.id = 'container';
+
         var messageBlock = document.createElement("ul");
-        document.body.appendChild(messageBlock);
         messageBlock.id = 'messages';
+        $('#container').append(messageBlock);
         
         var newButton = document.createElement("button"); 
         document.body.appendChild(newButton);
@@ -87,7 +114,7 @@
         newButton.innerHTML = 'Show most recent messages';
 
         var userTimeline = document.createElement("ul");
-        $('#messages').append(userTimeline);
+        $('#container').append(userTimeline);
         userTimeline.id = 'timeline'; 
 
    
