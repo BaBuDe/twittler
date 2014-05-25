@@ -13,10 +13,10 @@
         }
 
         #messages {
-           width: 750px;
-     background-color: #8B9494;
-    min-height: 100px;
-    position: fixed;
+          width: 750px;
+          background-color: #8B9494;
+          min-height: 100px;
+          position: fixed;
         }
 
         #messageButton {
@@ -51,25 +51,25 @@
 
        #container {
          width: 1200px;
-     margin: 0 auto;
-     position: relative;
+         margin: 0 auto;
+         position: relative;
        }
 
         #timeline {
-        
          width: 350px;
-     background-color: pink;
-     float: right;
-     overflow: scroll;
+         background-color: pink;
+         float: right;
+         overflow: scroll;
        }
 
        #timeline, #messages {
         border: 1px solid white;
-    min-height: 450px;
-  }
+        min-height: 450px;
+      }
+        
         body {
-            background-color: #CCFFFF;
-            margin: 0;
+          background-color: #CCFFFF;
+          margin: 0;
         }
        
 
@@ -134,9 +134,14 @@
             var tweetObject = $('<li></li>');
             var tweetContent = $('<span></span>');
             var userName = $('<span id="userName"></span>');
+            var time = new Date(); 
+            var currentMin = time.getUTCMinutes();
+            var tweetTime = tweet.created_at;
+            // var tweetMin = tweetTime.getUTCMinutes();
+            var lapse = currentMin - tweetTime.getUTCMinutes();
 
             userName.text('@' + currentUsername + ': ');
-            tweetContent.text(tweet.message + ' (tweeted on ' + tweet.created_at + ')');
+            tweetContent.text(tweet.message + ' (tweeted ' + lapse +' minutes ago)');
 
             userName.appendTo(tweetObject);
             tweetContent.appendTo(tweetObject);
