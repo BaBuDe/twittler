@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
   </head>
     <style>
 
@@ -134,15 +135,17 @@
             var tweetObject = $('<li></li>');
             var tweetContent = $('<span></span>');
             var userName = $('<span id="userName"></span>');
-            //Make the timestamp appear in a "user-friendly" way
-            //To show full Unix date, just use tweet.created_at instead of lapse in the tweet content
-            var time = new Date(); 
-            var currentMin = time.getUTCMinutes();
+
+            //Make the timestamp appear in a "user-friendly" way without moment.js
+            // var time = new Date(); 
+            // var currentMin = time.getUTCMinutes();
+            // var lapse = currentMin - tweetTime.getUTCMinutes();
+
             var tweetTime = tweet.created_at;
-            var lapse = currentMin - tweetTime.getUTCMinutes();
+            var minAgo = moment().startOf('tweetTime').fromNow();
 
             userName.text('@' + currentUsername + ': ');
-            tweetContent.text(tweet.message + ' (tweeted ' + lapse +' minutes ago)');
+            tweetContent.text(tweet.message + ' (tweeted ' +  minAgo +')');
 
             userName.appendTo(tweetObject);
             tweetContent.appendTo(tweetObject);
@@ -155,18 +158,18 @@
            
 
           $('#userName').click(function() {
-                $('#timeline').empty();
-                var whoseTimeline = $('<li></li>');
-                whoseTimeline.text('Timeline for ' + currentUsername + ':');
-                $('#timeline').append(whoseTimeline);
-                var index = streams.users[currentUsername].length - 1;
-                while(index >= 0){
-                  var a = streams.users[currentUsername][index];
-                  var b = $('<div></div>');
-                  b.text(a.created_at +' : ' + a.message);
-                  b.appendTo(timeline);
-                  index -= 1;
-                };
+              $('#timeline').empty();
+              var whoseTimeline = $('<li></li>');
+              whoseTimeline.text('Timeline for ' + currentUsername + ':');
+              $('#timeline').append(whoseTimeline);
+              var index = streams.users[currentUsername].length - 1;
+              while(index >= 0){
+                var a = streams.users[currentUsername][index];
+                var b = $('<div></div>');
+                b.text(a.created_at +' : ' + a.message);
+                b.appendTo(timeline);
+                index -= 1;
+              };
           });
         });
      
