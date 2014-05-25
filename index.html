@@ -134,10 +134,11 @@
             var tweetObject = $('<li></li>');
             var tweetContent = $('<span></span>');
             var userName = $('<span id="userName"></span>');
+            //Make the timestamp appear in a "user-friendly" way
+            //To show full Unix date, just use tweet.created_at instead of lapse in the tweet content
             var time = new Date(); 
             var currentMin = time.getUTCMinutes();
             var tweetTime = tweet.created_at;
-            // var tweetMin = tweetTime.getUTCMinutes();
             var lapse = currentMin - tweetTime.getUTCMinutes();
 
             userName.text('@' + currentUsername + ': ');
