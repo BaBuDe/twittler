@@ -21,9 +21,15 @@
         }
 
         #messageButton {
-          position: fixed;
-          bottom: 10%;
-          right: 50%;
+          position: relative;
+          
+          z-index: 2;
+        }
+
+        #sendButton {
+          position: relative;
+          
+          z-index: 1;
         }
 
         #header1 {
@@ -50,23 +56,31 @@
           color: blue;
         }
 
-       #container {
+        #container {
          width: 1200px;
          margin: 0 auto;
          position: relative;
-       }
+        }
 
         #timeline {
          width: 350px;
          background-color: pink;
          float: right;
          overflow: scroll;
-       }
+        } 
 
-       #timeline, #messages {
-        border: 1px solid white;
-        min-height: 450px;
-      }
+        #timeline, #messages {
+          border: 1px solid white;
+          min-height: 450px;
+        }
+
+        #tweetBox {
+          position: relative;
+         
+          padding-left: 5px;
+          width: 400px;
+          overflow: scroll;
+        }
         
         body {
           background-color: #CCFFFF;
@@ -81,9 +95,16 @@
 
     <script>
 
+      
+      var visitor ="visitor";
+
       $(document).ready(function(){
         var $body = $('body');
         $body.html('');
+
+        
+        
+        streams.users.visitor = [];
 
         var header = document.createElement("h1");
         document.body.appendChild(header);
@@ -109,7 +130,7 @@
         $('#container').append(messageBlock);
         
         var newButton = document.createElement("button"); 
-        document.body.appendChild(newButton);
+        $('#container').append(newButton);
         newButton.type = 'button';
         newButton.id = 'messageButton';
         newButton.innerHTML = 'Show most recent messages';
@@ -118,11 +139,32 @@
         $('#container').append(userTimeline);
         userTimeline.id = 'timeline'; 
 
+        var userTweets = document.createElement("input");
+        $('#messages').append(userTweets);
+        userTweets.id = 'tweetBox';
+        userTweets.type = 'text';
+        userTweets.value = "Tweet something here!";
+
+        var sendButton = document.createElement("button"); 
+        $('#messages').append(sendButton);
+        sendButton.type = 'button';
+        sendButton.id = 'sendButton';
+        sendButton.innerHTML = 'Tweet it!';
    
-       
         var index = 0;
 
         //auto-add tweets...haven't figured this out yet
+
+        //clear input form field when clicked the first time
+        $('#tweetBox').click(function() {
+          if ($('#tweetBox').val() === "Tweet something here!") {
+          $('#tweetBox').val('');
+          };
+        });
+
+        //let user tweet
+        $('#sendButton').click(function () {writeTweet($('input:text').val())});
+      
        
         //Button for adding newest message    
         $("#messageButton").click(function() {
